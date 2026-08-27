@@ -49,8 +49,7 @@ export const ukBranchGroup = {
   title: "Group background",
   paragraphs: [
     "Cardinal Torch Company Limited sources and supplies agricultural commodities from Nigeria and the wider West African region. Its activities span the commodity value chain, including field sourcing, aggregation, quality control, warehousing, processing, logistics, imports, and exports. The group works with local partners and qualified field personnel in diverse Nigerian locations to obtain produce that meets customer specifications and international trade requirements.",
-    "The group principal commodities include cocoa beans, raw cashew nuts, sesame seeds, soybeans, maize, millet, sorghum, wheat, beans, and husked brown rice. The company profile identifies indicative monthly or quarterly supply capacities across these product lines, subject to seasonality, quality specifications, customer requirements, and confirmed contracts.",
-  ],
+    ],
   website: "www.cardinaltorch.com",
   websiteHref: "https://www.cardinaltorch.com",
   websiteCta: "Visit the parent company website for more about the group, commodities, and operations.",
