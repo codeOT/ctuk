@@ -68,14 +68,7 @@ const Footer = () => {
             &copy; {new Date().getFullYear()} Cardinal Torch Company UK Limited —
             All Rights Reserved.
           </p>
-          <a
-            href="https://www.cardinaltorch.com"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="hover:underline"
-          >
-            www.cardinaltorch.com
-          </a>
+          
         </motion.div>
       </motion.div>
     </footer>

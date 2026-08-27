@@ -80,7 +80,7 @@ const UkContent = () => {
 
   const submitForm = async (e) => {
     e.preventDefault();
-    const form = e.target;
+    const form = e.currentTarget;
     const formData = new FormData(form);
 
     if (!formData.get("name")) {
@@ -378,66 +378,51 @@ const UkContent = () => {
               onSubmit={submitForm}
               className="rounded-[2rem] border border-[#0f3d2e]/10 bg-white p-8 phone:p-5"
             >
-              <motion.div
-                variants={staggerFast}
-                initial="hidden"
-                whileInView="visible"
-                viewport={viewportOnce}
-                className="flex flex-col gap-4"
-              >
-                <motion.input
-                  variants={chipReveal}
+              <div className="flex flex-col gap-4">
+                <input
                   required
                   className={inputClass}
                   type="text"
                   name="name"
                   placeholder="Name"
                 />
-                <motion.input
-                  variants={chipReveal}
+                <input
                   required
                   type="email"
                   name="email"
                   className={inputClass}
                   placeholder="Email"
                 />
-                <motion.div
-                  variants={staggerFast}
-                  className="grid grid-cols-2 gap-4 phone:grid-cols-1"
-                >
-                  <motion.input
-                    variants={chipReveal}
+                <div className="grid grid-cols-2 gap-4 phone:grid-cols-1">
+                  <input
                     type="text"
                     name="number"
                     className={inputClass}
                     placeholder="Number (optional)"
                   />
-                  <motion.input
-                    variants={chipReveal}
+                  <input
                     type="text"
                     name="company"
                     className={inputClass}
                     placeholder="Company (optional)"
                   />
-                </motion.div>
-                <motion.textarea
-                  variants={chipReveal}
+                </div>
+                <textarea
                   rows={5}
                   className={inputClass}
                   name="message"
                   required
                   placeholder="Message"
                 />
-                <motion.button
-                  variants={chipReveal}
+                <button
                   type="submit"
                   disabled={submitting}
                   className="mt-2 inline-flex items-center justify-center gap-2 rounded-full bg-[#0f3d2e] px-7 py-3 text-sm font-semibold text-white transition hover:bg-primary disabled:cursor-not-allowed disabled:bg-slate-200 disabled:text-slate-400"
                 >
                   {submitting ? "Sending..." : "Send message"}
                   {!submitting && <i className="fi fi-rr-arrow-small-right" />}
-                </motion.button>
-              </motion.div>
+                </button>
+              </div>
             </motion.form>
           </div>
         </div>

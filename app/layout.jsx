@@ -25,6 +25,11 @@ export const metadata = {
   },
   description:
     "Cardinal Torch Company UK Limited is a London-based trade intermediary and procurement company connecting Sub-Saharan African and European commodity markets.",
+  icons: {
+    icon: "/favicon.ico",
+    shortcut: "/favicon.ico",
+    apple: "/favicon.ico",
+  },
   openGraph: {
     type: "website",
     siteName: "Cardinal Torch UK",
@@ -40,6 +45,11 @@ export const viewport = {
 const RootLayout = ({ children }) => {
   return (
     <html lang="en" className={`${montserrat.variable} ${roboto.variable}`}>
+      <head>
+        <link rel="icon" href="/favicon.ico" />
+        <link rel="shortcut icon" href="/favicon.ico" />
+        <link rel="apple-touch-icon" href="/favicon.ico" />
+      </head>
       <body className="font-sans antialiased">
         <Toaster />
         <Navbar />

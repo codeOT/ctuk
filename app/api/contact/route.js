@@ -1,18 +1,30 @@
 import { emailRegex } from "@utils";
 import { NextResponse } from "next/server";
-import nodemailer from "nodemailer";
+import { Resend } from "resend";
 
-const UK_INBOX = "info_uk@cardinaltorch.com";
+const UK_INBOX = process.env.MAIL_TO || "info_uk@cardinaltorch.com";
+const FROM_ADDRESS =
+  process.env.MAIL_FROM || "Cardinal Torch UK <noreply@cardinaltorch.com>";
+
+const escapeHtml = (value) =>
+  String(value ?? "")
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#39;");
+
+const asText = (value) => String(value ?? "").trim();
 
 const html = (name, email, message, company, number) => {
+  const safeMessage = escapeHtml(message).replace(/\r?\n/g, "<br/>");
+
   return `
-    <h1>Message from ${name}</h1>
-    <br/>
-    <p>${message}</p>
-    <br/>
-    <p>Return Mail: <a href='mailto:${email}'>${email}</a></p>
-    ${number ? `<p>Phone Number: ${number}</p>` : ""}
-    ${company ? `<p>Company: ${company}</p>` : ""}
+    <h1>UK office enquiry from ${escapeHtml(name)}</h1>
+    <p>${safeMessage}</p>
+    <p>Return Mail: <a href="mailto:${escapeHtml(email)}">${escapeHtml(email)}</a></p>
+    ${number ? `<p>Phone Number: ${escapeHtml(number)}</p>` : ""}
+    ${company ? `<p>Company: ${escapeHtml(company)}</p>` : ""}
   `;
 };
 
@@ -20,11 +32,11 @@ export async function POST(request) {
   const formData = await request.formData();
 
   const sender = {
-    name: formData.get("name"),
-    email: formData.get("email"),
-    number: formData.get("number"),
-    company: formData.get("company"),
-    message: formData.get("message"),
+    name: asText(formData.get("name")),
+    email: asText(formData.get("email")),
+    number: asText(formData.get("number")),
+    company: asText(formData.get("company")),
+    message: asText(formData.get("message")),
   };
 
   if (!sender.name) {
@@ -48,21 +60,20 @@ export async function POST(request) {
     );
   }
 
-  try {
-    const transporter = nodemailer.createTransport({
-      service: "Gmail",
-      host: "smtp.gmail.com",
-      port: 465,
-      secure: true,
-      auth: {
-        user: process.env.MAIL_USER,
-        pass: process.env.MAIL_KEY,
-      },
-    });
+  if (!process.env.RESEND_API_KEY) {
+    console.error("Missing RESEND_API_KEY");
+    return NextResponse.json(
+      { success: false, message: "Email service is not configured" },
+      { status: 500 }
+    );
+  }
 
-    const mailData = {
-      from: { name: sender.name, address: sender.email },
+  try {
+    const resend = new Resend(process.env.RESEND_API_KEY);
+    const { error } = await resend.emails.send({
+      from: FROM_ADDRESS,
       to: UK_INBOX,
+      replyTo: sender.email,
       subject: `UK Office enquiry from ${sender.name} || ${sender.email}`,
       html: html(
         sender.name,
@@ -71,18 +82,30 @@ export async function POST(request) {
         sender.company,
         sender.number
       ),
-    };
-
-    await new Promise((resolve, reject) => {
-      transporter.sendMail(mailData, (err, info) => {
-        if (err) {
-          console.error(err);
-          reject(err);
-        } else {
-          resolve(info);
-        }
-      });
+      text: [
+        `UK office enquiry from ${sender.name}`,
+        "",
+        sender.message,
+        "",
+        `Return Mail: ${sender.email}`,
+        sender.number ? `Phone Number: ${sender.number}` : null,
+        sender.company ? `Company: ${sender.company}` : null,
+      ]
+        .filter(Boolean)
+        .join("\n"),
     });
+
+    if (error) {
+      console.error("Resend error:", error);
+      const detail =
+        typeof error === "object" && error?.message
+          ? error.message
+          : "Unable to send message right now";
+      return NextResponse.json(
+        { success: false, message: detail },
+        { status: 502 }
+      );
+    }
 
     return NextResponse.json(
       { success: true, message: "Message sent successfully" },
