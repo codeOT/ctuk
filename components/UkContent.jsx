@@ -22,23 +22,29 @@ import {
   ukBranchRole,
 } from "@data/ukBranchData";
 
-const SectionHeading = ({ label, title }) => (
+const SectionHeading = ({ label, title, align = "left" }) => (
   <>
     <motion.p
       variants={revealUp()}
-      className="text-xs font-semibold uppercase tracking-[0.22em] text-primary"
+      className={`text-xs font-semibold uppercase tracking-[0.22em] text-primary ${
+        align === "center" ? "text-center" : ""
+      }`}
     >
       {label}
     </motion.p>
     <motion.h2
       variants={revealUp()}
-      className="section-header mt-3 text-[#0f3d2e]"
+      className={`section-header mt-3 text-[#0f3d2e] ${
+        align === "center" ? "text-center" : ""
+      }`}
     >
       {title}
     </motion.h2>
     <motion.div
       variants={lineGrow()}
-      className="mt-4 h-1 w-16 origin-left bg-secondary"
+      className={`mt-4 h-1 w-16 bg-secondary ${
+        align === "center" ? "mx-auto origin-center" : "origin-left"
+      }`}
     />
   </>
 );
@@ -59,21 +65,6 @@ const BodyCopy = ({ paragraphs }) => (
 
 const inputClass =
   "w-full rounded-xl border border-[#0f3d2e]/15 bg-white px-4 py-3 text-sm text-[#0f3d2e] outline-none transition placeholder:text-slate-400 focus:border-primary focus:ring-2 focus:ring-primary/20";
-
-const contactItems = [
-  {
-    key: "email",
-    href: `mailto:${ukBranchContact.email}`,
-    icon: "fi fi-rr-envelope",
-    label: ukBranchContact.email,
-  },
-  {
-    key: "phone",
-    href: ukBranchContact.phoneHref,
-    icon: "fi fi-rr-phone-call",
-    label: ukBranchContact.phone,
-  },
-];
 
 const UkContent = () => {
   const [submitting, setSubmitting] = useState(false);
@@ -185,7 +176,7 @@ const UkContent = () => {
             initial="hidden"
             whileInView="visible"
             viewport={viewportOnce}
-            className="mt-10 grid grid-cols-4 gap-px overflow-hidden rounded-2xl bg-[#0f3d2e]/10 phone:grid-cols-1 tab-m:grid-cols-2"
+            className="mt-10 grid grid-cols-3 gap-px overflow-hidden rounded-2xl bg-[#0f3d2e]/10 phone:grid-cols-1 tab-m:grid-cols-2"
           >
             {ukBranchLegal.facts.map((fact) => (
               <motion.div
@@ -325,106 +316,81 @@ const UkContent = () => {
         id="contact"
         className="scroll-mt-28 border-t border-[#0f3d2e]/10 bg-[#f4f7f4] px-[5vw] py-20 phone:py-14"
       >
-        <div className="mx-auto max-w-7xl">
-          <div className="grid grid-cols-2 gap-10 tab-s:grid-cols-1">
-            <motion.div
-              variants={staggerContainer}
-              initial="hidden"
-              whileInView="visible"
-              viewport={viewportOnce}
+        <div className="mx-auto flex max-w-2xl flex-col items-center">
+          <motion.div
+            variants={staggerContainer}
+            initial="hidden"
+            whileInView="visible"
+            viewport={viewportOnce}
+            className="w-full"
+          >
+            <SectionHeading
+              align="center"
+              label={ukBranchContact.title}
+              title={ukBranchContact.heading}
+            />
+            <motion.p
+              variants={revealUp()}
+              className="mx-auto mt-6 max-w-lg text-center text-base leading-relaxed text-slate-600"
             >
-              <SectionHeading
-                label={ukBranchContact.title}
-                title={ukBranchContact.company}
+              {ukBranchContact.formDescription}
+            </motion.p>
+          </motion.div>
+
+          <motion.form
+            variants={revealUp(0.08)}
+            initial="hidden"
+            whileInView="visible"
+            viewport={viewportOnce}
+            onSubmit={submitForm}
+            className="mt-10 w-full rounded-[2rem] border border-[#0f3d2e]/10 bg-white p-8 phone:p-5"
+          >
+            <div className="flex flex-col gap-4">
+              <input
+                required
+                className={inputClass}
+                type="text"
+                name="name"
+                placeholder="Name"
               />
-              <motion.p
-                variants={revealUp()}
-                className="mt-6 text-base leading-relaxed text-slate-600"
-              >
-                {ukBranchContact.formDescription}
-              </motion.p>
-
-              <motion.div variants={staggerFast} className="mt-8 space-y-4">
-                {contactItems.map((item) => (
-                  <motion.a
-                    key={item.key}
-                    variants={chipReveal}
-                    href={item.href}
-                    className="flex items-center gap-3 text-sm text-[#0f3d2e] transition hover:text-primary"
-                  >
-                    <span className="flex h-10 w-10 items-center justify-center rounded-full bg-[#0f3d2e]/10 text-[#0f3d2e]">
-                      <i className={item.icon} />
-                    </span>
-                    {item.label}
-                  </motion.a>
-                ))}
-                <motion.p
-                  variants={chipReveal}
-                  className="flex items-start gap-3 text-sm text-[#0f3d2e]"
-                >
-                  <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-[#0f3d2e]/10 text-[#0f3d2e]">
-                    <i className="fi fi-rr-marker" />
-                  </span>
-                  <span className="pt-2">{ukBranchContact.address}</span>
-                </motion.p>
-              </motion.div>
-            </motion.div>
-
-            <motion.form
-              variants={revealUp(0.08)}
-              initial="hidden"
-              whileInView="visible"
-              viewport={viewportOnce}
-              onSubmit={submitForm}
-              className="rounded-[2rem] border border-[#0f3d2e]/10 bg-white p-8 phone:p-5"
-            >
-              <div className="flex flex-col gap-4">
+              <input
+                required
+                type="email"
+                name="email"
+                className={inputClass}
+                placeholder="Email"
+              />
+              <div className="grid grid-cols-2 gap-4 phone:grid-cols-1">
                 <input
-                  required
-                  className={inputClass}
                   type="text"
-                  name="name"
-                  placeholder="Name"
+                  name="number"
+                  className={inputClass}
+                  placeholder="Number (optional)"
                 />
                 <input
-                  required
-                  type="email"
-                  name="email"
+                  type="text"
+                  name="company"
                   className={inputClass}
-                  placeholder="Email"
+                  placeholder="Company (optional)"
                 />
-                <div className="grid grid-cols-2 gap-4 phone:grid-cols-1">
-                  <input
-                    type="text"
-                    name="number"
-                    className={inputClass}
-                    placeholder="Number (optional)"
-                  />
-                  <input
-                    type="text"
-                    name="company"
-                    className={inputClass}
-                    placeholder="Company (optional)"
-                  />
-                </div>
-                <textarea
-                  rows={5}
-                  className={inputClass}
-                  name="message"
-                  required
-                  placeholder="Message"
-                />
-                <button
-                  type="submit"
-                  disabled={submitting}
-                  className="mt-2 inline-flex items-center justify-center gap-2 rounded-full bg-[#0f3d2e] px-7 py-3 text-sm font-semibold text-white transition hover:bg-primary disabled:cursor-not-allowed disabled:bg-slate-200 disabled:text-slate-400"
-                >
-                  {submitting ? "Sending..." : "Send message"}
-                  {!submitting && <i className="fi fi-rr-arrow-small-right" />}
-                </button>
               </div>
-            </motion.form>
-          </div>
+              <textarea
+                rows={5}
+                className={inputClass}
+                name="message"
+                required
+                placeholder="Message"
+              />
+              <button
+                type="submit"
+                disabled={submitting}
+                className="mt-2 inline-flex items-center justify-center gap-2 self-center rounded-full bg-[#0f3d2e] px-7 py-3 text-sm font-semibold text-white transition hover:bg-primary disabled:cursor-not-allowed disabled:bg-slate-200 disabled:text-slate-400"
+              >
+                {submitting ? "Sending..." : "Send message"}
+                {!submitting && <i className="fi fi-rr-arrow-small-right" />}
+              </button>
+            </div>
+          </motion.form>
         </div>
       </section>
     </div>

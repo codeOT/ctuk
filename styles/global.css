@@ -58,3 +58,45 @@ body {
     line-height: 1.25;
   }
 }
+
+.legal-content h2 {
+  margin-top: 1.5rem;
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: #0f3d2e;
+}
+
+.legal-content a {
+  color: #2fae60;
+  font-weight: 600;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.legal-content ul {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  padding-left: 1.25rem;
+  list-style: disc;
+}
+
+.legal-content table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.875rem;
+}
+
+.legal-content th,
+.legal-content td {
+  border: 1px solid rgba(15, 61, 46, 0.15);
+  padding: 0.75rem 1rem;
+  text-align: left;
+  vertical-align: top;
+}
+
+.legal-content th {
+  background: #f4f7f4;
+  font-weight: 600;
+  color: #0f3d2e;
+}

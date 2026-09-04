@@ -37,7 +37,6 @@ export const ukBranchLegal = {
     { label: "Incorporated", value: "October 2023" },
     { label: "Company number", value: "15183354" },
     { label: "Registered office", value: "15 Alfred Place, London, WC1E 7EB" },
-    { label: "Structure", value: "Wholly owned subsidiary" },
   ],
   paragraphs: [
     "Cardinal Torch Company UK Limited was incorporated in the United Kingdom in October 2023 as a private limited company. The company is registered at Companies House under company number 15183354, with its registered office at 15 Alfred Place, London, WC1E 7EB. It is authorised to carry out non-specialised wholesale trade activities and operates in full compliance with UK company law, tax, and employment regulations.",
@@ -84,6 +83,7 @@ export const ukBranchRole = {
 
 export const ukBranchContact = {
   title: "Contact",
+  heading: "Cardinal Torch Company UK Limited",
   company: "Cardinal Torch Company UK Limited",
   address: "15 Alfred Place London, WC1E 7EB",
   email: "info_uk@cardinaltorch.com",
@@ -91,6 +91,5 @@ export const ukBranchContact = {
   phoneHref: "tel:07463675880",
   website: "www.cardinaltorch.com",
   websiteHref: "https://www.cardinaltorch.com",
-  formDescription:
-    "Send a message to our UK office. Your enquiry will be delivered to info_uk@cardinaltorch.com.",
+  formDescription: "Send a message to our UK office.",
 };

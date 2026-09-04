@@ -2,6 +2,7 @@ import { Montserrat, Roboto } from "next/font/google";
 import { Toaster } from "react-hot-toast";
 import Navbar from "@components/Navbar";
 import Footer from "@components/Footer";
+import CookieBanner from "@components/CookieBanner";
 import "@styles/global.css";
 
 const montserrat = Montserrat({
@@ -55,6 +56,7 @@ const RootLayout = ({ children }) => {
         <Navbar />
         <main className="min-w-0 overflow-x-hidden">{children}</main>
         <Footer />
+        <CookieBanner />
       </body>
     </html>
   );

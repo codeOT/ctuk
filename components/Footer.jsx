@@ -2,6 +2,8 @@
 
 import { motion } from "framer-motion";
 import { ukBranchContact } from "@data/ukBranchData";
+import CookieSettingsLink from "@components/CookieSettingsLink";
+import Link from "next/link";
 import {
   lineGrow,
   revealUp,
@@ -68,7 +70,15 @@ const Footer = () => {
             &copy; {new Date().getFullYear()} Cardinal Torch Company UK Limited —
             All Rights Reserved.
           </p>
-          
+          <div className="flex flex-wrap items-center gap-x-5 gap-y-2">
+            <Link href="/privacy-policy" className="hover:underline">
+              Privacy policy
+            </Link>
+            <Link href="/cookie-policy" className="hover:underline">
+              Cookie policy
+            </Link>
+            <CookieSettingsLink />
+          </div> 
         </motion.div>
       </motion.div>
     </footer>
